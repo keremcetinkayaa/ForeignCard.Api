@@ -1,0 +1,14 @@
+$kind: http-request
+url: "{{baseUrl}}/api/transactions"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "cardNo": "1111222233334444",
+      "amount": 100,
+      "currencyNumericCode": "840"
+    }
+order: 1000

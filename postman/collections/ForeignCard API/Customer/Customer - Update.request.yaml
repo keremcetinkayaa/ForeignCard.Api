@@ -1,0 +1,17 @@
+$kind: http-request
+url: "{{baseUrl}}/api/customers"
+method: PUT
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "customerId": 1,
+      "firstName": "",
+      "lastName": "",
+      "phoneNo": "",
+      "email": "",
+      "IsActive": true
+    }
+order: 3000

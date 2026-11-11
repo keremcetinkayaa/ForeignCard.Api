@@ -1,0 +1,13 @@
+$kind: collection
+description: ""
+variables:
+  - key: baseUrl
+    value: https://localhost:7280
+    disabled: false
+  - key: token
+    secret: true
+    disabled: false
+auth:
+  type: bearer
+  credentials:
+    token: "{{token}}"

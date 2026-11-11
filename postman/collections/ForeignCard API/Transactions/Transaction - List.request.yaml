@@ -1,0 +1,6 @@
+$kind: http-request
+url: "{{baseUrl}}/api/transactions?top=50"
+method: GET
+queryParams:
+  top: "50"
+order: 3000

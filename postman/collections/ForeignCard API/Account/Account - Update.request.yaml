@@ -1,0 +1,13 @@
+$kind: http-request
+url: "{{baseUrl}}/api/accounts"
+method: PUT
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "accountId": 1,
+      "status": ""
+    }
+order: 2000

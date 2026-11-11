@@ -1,0 +1,14 @@
+$kind: http-request
+url: "{{baseUrl}}/api/accounts/deposit"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "accountId": 1,
+      "amount": 20000,
+      "description": "Para yatirma"
+    }
+order: 3000

@@ -1,0 +1,12 @@
+$kind: http-request
+url: "{{baseUrl}}/api/transactions/simulate"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "count": 10
+    }
+order: 2000

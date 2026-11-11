@@ -1,0 +1,13 @@
+# Use this workspace to collaborate
+workspace:
+  id: da52337f-a63b-41e2-831f-2a7d2105ad0f
+
+localResources:
+  specs:
+    - ../ForeignCard.Api/obj/Debug/net8.0/EndpointInfo/ForeignCard.Api.json
+
+# Each entry here maps a local resource to one or more corresponding objects in Postman Cloud
+
+cloudResources:
+  collections:
+    ../postman/collections/ForeignCard API: 1c6bdaa2-0d9d-456e-93f4-a8feb460cf54

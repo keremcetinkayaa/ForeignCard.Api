@@ -1,0 +1,17 @@
+$kind: http-request
+url: "{{baseUrl}}/api/customers"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "firstName": "",
+      "lastName": "",
+      "nationalId": "",
+      "phoneNo": "",
+      "email": "",
+      "password":""
+    }
+order: 1000

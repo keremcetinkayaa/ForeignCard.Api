@@ -1,0 +1,14 @@
+$kind: http-request
+url: "{{baseUrl}}/api/accounts"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "customerId": 1,
+      "accountNo": "",
+      "currencyCode": ""
+    }
+order: 1000

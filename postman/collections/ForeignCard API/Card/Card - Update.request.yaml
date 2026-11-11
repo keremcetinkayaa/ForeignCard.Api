@@ -1,0 +1,15 @@
+$kind: http-request
+url: "{{baseUrl}}/api/cards"
+method: PUT
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "cardId": 1,
+      "expiryDate": "",
+      "status": "",
+      "allowForeignUse": true
+    }
+order: 2000
