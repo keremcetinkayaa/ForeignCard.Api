@@ -23,12 +23,14 @@ namespace ForeignCard.Common.Constants
         public const string SP_AccountGet = "Core.ACCOUNT_GET";
         public const string SP_AccountDeposit = "Core.ACCOUNT_DEPOSIT";
         public const string SP_AccountStatementGet = "Core.ACCOUNTSTATEMENT_GET";
+        public const string SP_AccountListByCustomer = "Core.ACCOUNT_LISTBYCUSTOMER";
         #endregion
 
         #region Card
         public const string SP_CardCreate = "Core.CARD_CREATE";
         public const string SP_CardUpdate = "Core.CARD_UPDATE";
         public const string SP_CardListForSimulation = "Core.CARDLISTFORSIMULATION";
+        public const string SP_CardListByCustomer = "Core.CARD_LISTBYCUSTOMER";
         #endregion
 
         #region Transaction

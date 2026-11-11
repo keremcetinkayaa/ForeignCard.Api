@@ -1,0 +1,4 @@
+$kind: http-request
+url: "{{baseUrl}}/api/person/cards"
+method: GET
+order: 3000

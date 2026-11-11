@@ -1,0 +1,13 @@
+$kind: http-request
+url: "{{baseUrl}}/api/person"
+method: PUT
+body:
+  type: json
+  content: "{\r
+
+    \    \"phoneNo\":\"5223333333\",\r
+
+    \    \"email\":\"\"\r
+
+    }"
+order: 6000
