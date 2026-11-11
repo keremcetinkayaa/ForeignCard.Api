@@ -1,10 +1,10 @@
-﻿using Dapper;
+﻿using System.Data;
+using Dapper;
 using ForeignCard.Common.Abstractions;
+using ForeignCard.Common.Constants;
 using ForeignCard.Model.Customers;
 using MediatR;
-using System.Data;
-using static ForeignCard.Model.Customers.CreateCustomerModel;
-using ForeignCard.Common.Constants;
+using Microsoft.IdentityModel.Tokens;
 
 namespace ForeignCard.Operation.Customers;
 
@@ -21,24 +21,30 @@ public class UpdateCustomerHandler : IRequestHandler<UpdateCustomerModel.Custome
     {
         using var conn = _factory.CreateConnection();
 
+        // 1. Güncelle (gönderilmeyen alanlar null gider, procedure eskisini korur)
         var p = new DynamicParameters();
         p.Add("@CustomerId", request.CustomerId);
-        p.Add("@FirstName", request.FirstName);
-        p.Add("@LastName", request.LastName);
-        p.Add("@PhoneNo", request.PhoneNo);
-        p.Add("@Email", request.Email);
+        p.Add("@FirstName", Clean(request.FirstName));
+        p.Add("@LastName", Clean(request.LastName));
+        p.Add("@PhoneNo", Clean(request.PhoneNo));
+        p.Add("@Email", Clean(request.Email));
         p.Add("@IsActive", request.IsActive);
 
         await conn.ExecuteAsync(ProcedureConstants.SP_CustomerUpdate, p, commandType: CommandType.StoredProcedure);
 
-        return new UpdateCustomerModel.CustomerUpdateResponse
+        // 2. Güncel hali oku ve döndür
+        var getParams = new DynamicParameters();
+        getParams.Add("@CustomerId", request.CustomerId);
+
+        var current = await conn.QuerySingleOrDefaultAsync<UpdateCustomerModel.CustomerUpdateResponse>(ProcedureConstants.SP_CustomerGet, getParams, commandType: CommandType.StoredProcedure);
+
+        return current ?? new UpdateCustomerModel.CustomerUpdateResponse
         {
-            CustomerId = request.CustomerId,
-            FirstName = request.FirstName,
-            LastName = request.LastName,
-            PhoneNo = request.PhoneNo,
-            Email = request.Email,
-            IsActive = request.IsActive
+            CustomerId = request.CustomerId
         };
     }
+
+    //Boş ya da sadece boşluk olan metni "gönderilmedi" say
+    private static string? Clean(string? value)
+        => string.IsNullOrWhiteSpace(value) ? null : value.Trim();
 }

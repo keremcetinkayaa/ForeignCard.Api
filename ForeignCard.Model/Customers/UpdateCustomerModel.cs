@@ -12,8 +12,8 @@ namespace ForeignCard.Model.Customers
         public class CustomerUpdateRequest : IRequest<CustomerUpdateResponse>
         {
             public int CustomerId { get; set; }
-            public string FirstName { get; set; } = "";
-            public string LastName { get; set; } = "";
+            public string? FirstName { get; set; }
+            public string? LastName { get; set; }
             public string? PhoneNo { get; set; }
             public string? Email { get; set; }
             public bool? IsActive { get; set; }
@@ -22,8 +22,8 @@ namespace ForeignCard.Model.Customers
         public class CustomerUpdateResponse
         {
             public int CustomerId { get; set; }
-            public string FirstName { get; set; } = "";
-            public string LastName { get; set; } = "";
+            public string? FirstName { get; set; } = "";
+            public string? LastName { get; set; } = "";
             public string? PhoneNo { get; set; }
             public string? Email { get; set; }
             public bool? IsActive { get; set; }

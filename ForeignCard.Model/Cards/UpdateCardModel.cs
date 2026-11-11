@@ -12,9 +12,8 @@ namespace ForeignCard.Model.Cards
         public class UpdateCardRequest : IRequest<UpdateCardResponse>
         {
             public int CardId { get; set; }
-            public DateTime ExpiryDate { get; set; }
-            public string Status { get; set; } = "";
-            public bool AllowForeignUse { get; set; }
+            public string? Status { get; set; } = "";
+            public bool? AllowForeignUse { get; set; }
         }
 
         public class UpdateCardResponse

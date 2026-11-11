@@ -12,14 +12,14 @@ namespace ForeignCard.Model.Cards
         public class CreateCardRequest : IRequest<CreateCardResponse>
         {
             public int AccountId { get; set; }
-            public string CardNo { get; set; } = "";
-            public DateTime ExpiryDate { get; set; }
-            public bool AllowForeignUse { get; set; }
+            public bool AllowForeignUse { get; set; } = true;
         }
 
         public class CreateCardResponse
         {
             public int Id { get; set; }
+            public string CardNo { get; set; } = "";
+            public DateTime ExpiryDate { get; set; }
         }
     }
 }
