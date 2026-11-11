@@ -20,17 +20,14 @@ namespace ForeignCard.Common.Constants
         #region Account
         public const string SP_AccountAdd = "Core.ACCOUNT_ADD";
         public const string SP_AccountUpdate = "Core.ACCOUNT_UPDATE";
-        public const string SP_AccountDelete = "Core.ACCOUNT_DELETE";
         public const string SP_AccountGet = "Core.ACCOUNT_GET";
         public const string SP_AccountDeposit = "Core.ACCOUNT_DEPOSIT";
         public const string SP_AccountStatementGet = "Core.ACCOUNTSTATEMENT_GET";
-        public const string SP_AccountMovementAdd = "Core.ACCOUNTMOVEMENT_ADD";
         #endregion
 
         #region Card
         public const string SP_CardCreate = "Core.CARD_CREATE";
         public const string SP_CardUpdate = "Core.CARD_UPDATE";
-        public const string SP_CardCancel = "Core.CARD_CANCEL";
         public const string SP_CardListForSimulation = "Core.CARDLISTFORSIMULATION";
         #endregion
 
@@ -46,9 +43,6 @@ namespace ForeignCard.Common.Constants
         #endregion
 
         #region Country
-        public const string SP_CountryAdd = "Fx.COUNTRY_ADD";
-        public const string SP_CountryUpdate = "Fx.COUNTRY_UPDATE";
-        public const string SP_CountryDelete = "Fx.COUNTRY_DELETE";
         public const string SP_CountrySet = "Fx.COUNTRY_SET";
         public const string SP_CountryList = "Fx.COUNTRY_LIST";
         #endregion
