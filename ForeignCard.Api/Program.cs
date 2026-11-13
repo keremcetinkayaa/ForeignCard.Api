@@ -1,18 +1,26 @@
-using System.Text;
 using FluentValidation;
 using ForeignCard.Api.BackgroundServices;
 using ForeignCard.Api.Middleware;
 using ForeignCard.Common.Abstractions;
+using ForeignCard.Operation.Cache;
 using ForeignCard.Operation.Customers;
 using ForeignCard.Operation.Data;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 var connStr = builder.Configuration.GetConnectionString("Bank")!;
 
 builder.Services.AddSingleton<IDbConnectionFactory>(new SqlConnectionFactory(connStr));
+builder.Services.AddStackExchangeRedisCache(options =>
+{
+    options.Configuration = builder.Configuration.GetConnectionString("Redis");
+    options.InstanceName = "ForeignCard:";
+});
+
+builder.Services.AddSingleton<ICacheService, RedisCacheService>();
 builder.Services.AddSingleton<IApiLogWriter, ForeignCard.Operation.Data.ApiLogWriter>();
 builder.Services.AddSingleton<ITokenService, TokenService>();
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(CreateCustomerHandler).Assembly));
