@@ -55,23 +55,10 @@ public class AccountsController : ControllerBase
     #endregion
 
     #region GET
-    [Authorize(Roles = "ADMIN, CUSTOMER")]
+    [Authorize(Roles = "ADMIN")]
     [HttpGet("{accountId}")]
     public async Task<IActionResult> Get(int accountId)
     {
-        if (User.IsInRole("CUSTOMER"))
-        {
-            var accounts = await _mediator.Send(new GetAccountInfoModel.GetAccountInfoRequest { AccountId = accountId });
-            if (accounts == null)
-                return NotFound();
-
-            var tokenId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value
-                          ?? User.FindFirst("nameid")?.Value;
-
-            if (tokenId != accounts.CustomerId.ToString())
-                return Forbid();
-        } 
-
         var account = await _mediator.Send(new GetAccountInfoModel.GetAccountInfoRequest { AccountId = accountId });
         if (account == null)
             return NotFound();
@@ -81,23 +68,10 @@ public class AccountsController : ControllerBase
     #endregion
 
     #region GET Statement
-    [Authorize(Roles = "ADMIN, CUSTOMER")]
+    [Authorize(Roles = "ADMIN")]
     [HttpGet("{accountId}/statement")]
     public async Task<IActionResult> Statement(int accountId)
     {
-        if (User.IsInRole("CUSTOMER"))
-        {
-            var account = await _mediator.Send(new GetAccountInfoModel.GetAccountInfoRequest { AccountId = accountId });
-            if (account == null)
-                return NotFound();
-
-            var tokenId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value
-                          ?? User.FindFirst("nameid")?.Value;
-
-            if (tokenId != account.CustomerId.ToString())
-                return Forbid();
-        }
-
         var statement = await _mediator.Send(new GetAccountStatementModel.GetAccountStatementRequest { AccountId = accountId });
         if (statement == null)
             return NotFound();

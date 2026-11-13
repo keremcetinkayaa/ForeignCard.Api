@@ -8,7 +8,6 @@ body:
   content: |-
     {
       "cardId": 1,
-      "expiryDate": "",
       "status": "",
       "allowForeignUse": true
     }

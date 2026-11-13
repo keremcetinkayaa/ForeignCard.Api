@@ -1,15 +1,4 @@
 $kind: http-request
-url: "{{baseUrl}}/api/cards"
-method: POST
-headers:
-  Content-Type: application/json
-body:
-  type: text
-  content: |-
-    {
-      "accountId": 1,
-      "cardNo": "",
-      "expiryDate": "",
-      "allowForeignUse": true
-    }
-order: 1000
+url: ""
+method: GET
+order: 3000

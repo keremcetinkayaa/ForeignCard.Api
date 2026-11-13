@@ -30,17 +30,10 @@ public class CustomersController : ControllerBase
     }
 
     #region GET
-    [Authorize(Roles = "ADMIN, CUSTOMER")]
+    [Authorize(Roles = "ADMIN")]
     [HttpGet("{customerId}")]
     public async Task<IActionResult> Get(int customerId)
     {
-        if (User.IsInRole("CUSTOMER")) 
-        {
-            var tokenId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value
-                          ?? User.FindFirst("nameid")?.Value;
-            if (tokenId != customerId.ToString())
-                return Forbid();
-        }
         var customer = await _mediator.Send(new GetCustomerInfoModel.CustomerGetRequest { CustomerId = customerId });
         if (customer == null)
             return NotFound();
@@ -64,30 +57,13 @@ public class CustomersController : ControllerBase
     #endregion
 
     #region PUT
-    [Authorize(Roles = "ADMIN, CUSTOMER")]
+    [Authorize(Roles = "ADMIN")]
     [HttpPut]
     public async Task<IActionResult> Update(UpdateCustomerModel.CustomerUpdateRequest command)
     {
         var result = await _updateValidator.ValidateAsync(command);
         if (!result.IsValid)
             return BadRequest(result.Errors.Select(e => e.ErrorMessage));
-
-        if (User.IsInRole("CUSTOMER"))
-        {
-            var tokenCustomerId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value
-                                  ?? User.FindFirst("nameid")?.Value;
-
-            if (tokenCustomerId != command.CustomerId.ToString())
-                return Forbid();
-
-            var currentInfo = await _mediator.Send(new GetCustomerInfoModel.CustomerGetRequest { CustomerId = command.CustomerId });
-            if (currentInfo == null)
-                return NotFound();
-
-            command.FirstName = currentInfo.FirstName;
-            command.LastName = currentInfo.LastName;
-            command.IsActive = null;
-        }
 
         var response = await _mediator.Send(command);
         return Ok(response);
