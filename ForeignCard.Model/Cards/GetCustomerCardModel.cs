@@ -20,6 +20,8 @@ public class GetCustomerCardModel
         public string CardNo { get; set; } = "";
         public int AccountId { get; set; }
         public string AccountNo { get; set; } = "";
+        public string Balance { get; set; }
+        public string CurrencyCode { get; set; } = "";
         public DateTime ExpiryDate { get; set; }
         public string Status { get; set; } = "";
         public bool AllowForeignUse { get; set; }
