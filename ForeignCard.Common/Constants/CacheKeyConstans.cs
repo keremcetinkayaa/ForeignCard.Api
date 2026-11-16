@@ -4,7 +4,6 @@
 public static class CacheKeyConstans
 {
     public const string ExchangeRateList = "exchangerates:list";
-    public static string ExchangeRate(string currencyCode) => $"exchangerate:{currencyCode.ToUpperInvariant()}";
 
     public const string CountryList = "countries:list";
 

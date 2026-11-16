@@ -43,8 +43,6 @@ public class ExchangeRateJob : BackgroundService
                 // Yeni kurlar yazıldı: eski kurları cache'ten sil,
                 // bir sonraki istek veritabanından taze okusun
                 await cache.RemoveAsync(CacheKeyConstans.ExchangeRateList);
-                foreach (var rate in rates)
-                    await cache.RemoveAsync(CacheKeyConstans.ExchangeRate(rate.Key));
 
                 _logger.LogInformation("Kurlar guncellendi: {Count} adet, cache temizlendi", rates.Count);
             }
