@@ -1,4 +1,5 @@
 ﻿using ForeignCard.Common.Abstractions;
+using ForeignCard.Common.Constants;
 using ForeignCard.Model.ExchangeRates;
 using MediatR;
 
@@ -19,7 +20,6 @@ public class ExchangeRateJob : BackgroundService
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-
         while (!stoppingToken.IsCancellationRequested)
         {
             try
@@ -27,6 +27,7 @@ public class ExchangeRateJob : BackgroundService
                 using var scope = _scopeFactory.CreateScope();
                 var provider = scope.ServiceProvider.GetRequiredService<IExchangeRateProvider>();
                 var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
+                var cache = scope.ServiceProvider.GetRequiredService<ICacheService>();
 
                 var rates = await provider.GetRatesAsync(stoppingToken);
 
@@ -39,7 +40,13 @@ public class ExchangeRateJob : BackgroundService
                     }, stoppingToken);
                 }
 
-                _logger.LogInformation("Kurlar guncellendi: {Count} adet", rates.Count);
+                // Yeni kurlar yazıldı: eski kurları cache'ten sil,
+                // bir sonraki istek veritabanından taze okusun
+                await cache.RemoveAsync(CacheKeyConstans.ExchangeRateList);
+                foreach (var rate in rates)
+                    await cache.RemoveAsync(CacheKeyConstans.ExchangeRate(rate.Key));
+
+                _logger.LogInformation("Kurlar guncellendi: {Count} adet, cache temizlendi", rates.Count);
             }
             catch (Exception ex)
             {
