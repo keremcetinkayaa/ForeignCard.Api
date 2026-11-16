@@ -17,5 +17,4 @@ public static class CacheDurations
     public static readonly TimeSpan ExchangeRate = TimeSpan.FromMinutes(60);
     public static readonly TimeSpan Country = TimeSpan.FromHours(24);
     public static readonly TimeSpan Customer = TimeSpan.FromMinutes(10);
-    public static readonly TimeSpan CustomerCards = TimeSpan.FromMinutes(1);
 }
