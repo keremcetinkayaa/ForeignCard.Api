@@ -51,5 +51,23 @@ public class CardsController : ControllerBase
         return Ok(response);
     }
     #endregion
+
+    #region GET
+    // Kart listesi: hesaba göre (?accountId=) ya da müşteriye göre (?customerId=)
+    [HttpGet]
+    public async Task<IActionResult> List([FromQuery] int? accountId = null, [FromQuery] int? customerId = null)
+    {
+        if (accountId == null && customerId == null)
+            return BadRequest(new { error = "accountId veya customerId gereklidir." });
+
+        var response = await _mediator.Send(new GetCustomerCardModel.GetCustomerCardRequest
+        {
+            AccountId = accountId,
+            CustomerId = customerId
+        });
+        return Ok(response);
+    }
+    #endregion
+
 }
 #endregion

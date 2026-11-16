@@ -6,7 +6,8 @@ public class GetCustomerCardModel
 {
     public class GetCustomerCardRequest : IRequest<GetCustomerCardResponse>
     {
-        public int CustomerId { get; set; }
+        public int? CustomerId { get; set; }
+        public int? AccountId { get; set; }
     }
 
     public class GetCustomerCardResponse

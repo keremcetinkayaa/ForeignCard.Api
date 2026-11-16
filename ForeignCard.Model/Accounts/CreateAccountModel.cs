@@ -12,13 +12,13 @@ namespace ForeignCard.Model.Accounts
         public class AccountCreateRequest : IRequest<AccountCreateResponse>
         {
             public int CustomerId { get; set; }
-            public string AccountNo { get; set; } = "";
             public string CurrencyCode { get; set; } = "";
         }
 
         public class AccountCreateResponse
         {
             public int Id { get; set; }
+            public string AccountNo { get; set; } = "";
         }
     }
 }

@@ -21,15 +21,11 @@ public class GetCountriesHandler : IRequestHandler<GetCountryModel.GetCountryReq
     public async Task<GetCountryModel.GetCountryResponse> Handle(GetCountryModel.GetCountryRequest request, CancellationToken cancellationToken)
     {
         // Önce Redis'e bak; yoksa veritabanından oku ve 24 saatliğine kaydet
-        return await _cache.GetOrSetAsync(
-            CacheKeyConstans.CountryList,
-            async () =>
+        return await _cache.GetOrSetAsync(CacheKeyConstans.CountryList, async () =>
             {
                 using var conn = _factory.CreateConnection();
 
-                var rows = await conn.QueryAsync<GetCountryModel.GetCountryItem>(
-                    ProcedureConstants.SP_CountryList,
-                    commandType: CommandType.StoredProcedure);
+                var rows = await conn.QueryAsync<GetCountryModel.GetCountryItem>(ProcedureConstants.SP_CountryList, commandType: CommandType.StoredProcedure);
 
                 return new GetCountryModel.GetCountryResponse { Countries = rows.ToList() };
             },

@@ -8,7 +8,6 @@ public class CreateAccountValidator : AbstractValidator<CreateAccountModel.Accou
     public CreateAccountValidator() 
     {
         RuleFor(x => x.CustomerId).GreaterThan(0);
-        RuleFor(x => x.AccountNo).NotEmpty().MaximumLength(20);
-        RuleFor(x => x.CurrencyCode).NotEmpty().Length(3);
+        RuleFor(x => x.CurrencyCode).NotEmpty().Length(3).WithMessage("Para birimi 3 harfli olmalıdır!");
     }
 }

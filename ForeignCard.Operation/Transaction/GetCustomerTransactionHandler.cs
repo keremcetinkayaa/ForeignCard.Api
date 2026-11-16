@@ -17,9 +17,7 @@ public class GetCustomerTransactionsHandler
         _factory = factory;
     }
 
-    public async Task<GetCustomerTransactions.GetCustomerTransactionsResponse> Handle(
-        GetCustomerTransactions.GetCustomerTransactionsRequest request,
-        CancellationToken cancellationToken)
+    public async Task<GetCustomerTransactions.GetCustomerTransactionsResponse> Handle(GetCustomerTransactions.GetCustomerTransactionsRequest request, CancellationToken cancellationToken)
     {
         using var conn = _factory.CreateConnection();
 
@@ -27,9 +25,7 @@ public class GetCustomerTransactionsHandler
         p.Add("@CustomerId", request.CustomerId);
         p.Add("@Top", request.Top);
 
-        var rows = await conn.QueryAsync<GetCustomerTransactions.CustomerTransactionItem>(
-            ProcedureConstants.SP_TransactionListByCustomer, p,
-            commandType: CommandType.StoredProcedure);
+        var rows = await conn.QueryAsync<GetCustomerTransactions.CustomerTransactionItem>(ProcedureConstants.SP_TransactionListByCustomer, p, commandType: CommandType.StoredProcedure);
 
         return new GetCustomerTransactions.GetCustomerTransactionsResponse { Transactions = rows.ToList() };
     }

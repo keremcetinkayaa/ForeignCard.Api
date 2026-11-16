@@ -28,9 +28,7 @@ public class LoginHandler : IRequestHandler<LoginModel.LoginRequest, LoginModel.
         var lockParams = new DynamicParameters();
         lockParams.Add("@NationalId", request.NationalId);
 
-        var lockInfo = await conn.QuerySingleAsync<LockRow>(
-            ProcedureConstants.SP_LoginAttemptCheckLock, lockParams,
-            commandType: CommandType.StoredProcedure);
+        var lockInfo = await conn.QuerySingleAsync<LockRow>(ProcedureConstants.SP_LoginAttemptCheckLock, lockParams, commandType: CommandType.StoredProcedure);
 
         if (lockInfo.IsLocked && lockInfo.LockedUntil.HasValue)
         {
@@ -42,14 +40,10 @@ public class LoginHandler : IRequestHandler<LoginModel.LoginRequest, LoginModel.
         var p = new DynamicParameters();
         p.Add("@NationalId", request.NationalId);
 
-        var user = await conn.QuerySingleOrDefaultAsync<LoginModel.LoginUserRow>(
-            ProcedureConstants.SP_CustomerLogin, p,
-            commandType: CommandType.StoredProcedure);
+        var user = await conn.QuerySingleOrDefaultAsync<LoginModel.LoginUserRow>(ProcedureConstants.SP_CustomerLogin, p, commandType: CommandType.StoredProcedure);
 
         // 3. Şifre kontrolü; başarısızsa denemeyi kaydet
-        var isValid = user != null
-                      && !string.IsNullOrEmpty(user.PasswordHash)
-                      && PasswordHelper.Verify(request.Password, user.PasswordHash);
+        var isValid = user != null&& !string.IsNullOrEmpty(user.PasswordHash)&& PasswordHelper.Verify(request.Password, user.PasswordHash);
 
         await AddAttemptAsync(conn, request.NationalId, user?.CustomerId, isValid);
 
@@ -76,8 +70,7 @@ public class LoginHandler : IRequestHandler<LoginModel.LoginRequest, LoginModel.
         p.Add("@CustomerId", customerId);
         p.Add("@IsSuccess", isSuccess);
 
-        await conn.ExecuteAsync(ProcedureConstants.SP_LoginAttemptAdd, p,
-            commandType: CommandType.StoredProcedure);
+        await conn.ExecuteAsync(ProcedureConstants.SP_LoginAttemptAdd, p, commandType: CommandType.StoredProcedure);
     }
 
     private class LockRow

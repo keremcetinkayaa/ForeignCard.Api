@@ -2,8 +2,7 @@
 
 public class AccountLockedException : Exception
 {
-    public AccountLockedException(int minutesLeft)
-        : base($"Cok fazla hatali deneme. {minutesLeft} dakika sonra tekrar deneyin.")
+    public AccountLockedException(int minutesLeft): base($"Cok fazla hatali deneme. {minutesLeft} dakika sonra tekrar deneyin.")
     {
     }
 }

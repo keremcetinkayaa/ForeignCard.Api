@@ -41,9 +41,7 @@ public class UpdateCustomerHandler : IRequestHandler<UpdateCustomerModel.Custome
         var getParams = new DynamicParameters();
         getParams.Add("@CustomerId", request.CustomerId);
 
-        var current = await conn.QuerySingleOrDefaultAsync<UpdateCustomerModel.CustomerUpdateResponse>(
-            ProcedureConstants.SP_CustomerGet, getParams,
-            commandType: CommandType.StoredProcedure);
+        var current = await conn.QuerySingleOrDefaultAsync<UpdateCustomerModel.CustomerUpdateResponse>(ProcedureConstants.SP_CustomerGet, getParams, commandType: CommandType.StoredProcedure);
 
         return current ?? new UpdateCustomerModel.CustomerUpdateResponse
         {
@@ -52,6 +50,5 @@ public class UpdateCustomerHandler : IRequestHandler<UpdateCustomerModel.Custome
     }
 
     // Boş ya da sadece boşluk olan metni "gönderilmedi" say
-    private static string? Clean(string? value)
-        => string.IsNullOrWhiteSpace(value) ? null : value.Trim();
+    private static string? Clean(string? value) => string.IsNullOrWhiteSpace(value) ? null : value.Trim();
 }

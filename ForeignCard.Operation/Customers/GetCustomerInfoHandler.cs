@@ -22,8 +22,7 @@ public class GetCustomerInfoHandler : IRequestHandler<GetCustomerInfoModel.Custo
     {
         // Önce Redis'e bak; yoksa veritabanından oku ve 10 dakikalığına kaydet.
         // Bulunamayan müşteri (null) cache'lenmez.
-        return await _cache.GetOrSetAsync(
-            CacheKeyConstans.Customer(request.CustomerId),
+        return await _cache.GetOrSetAsync(CacheKeyConstans.Customer(request.CustomerId),
             async () =>
             {
                 using var conn = _factory.CreateConnection();
@@ -31,9 +30,7 @@ public class GetCustomerInfoHandler : IRequestHandler<GetCustomerInfoModel.Custo
                 var p = new DynamicParameters();
                 p.Add("@CustomerId", request.CustomerId);
 
-                var customer = await conn.QuerySingleOrDefaultAsync<GetCustomerInfoModel.CustomerGetResponse>(
-                    ProcedureConstants.SP_CustomerGet, p,
-                    commandType: CommandType.StoredProcedure);
+                var customer = await conn.QuerySingleOrDefaultAsync<GetCustomerInfoModel.CustomerGetResponse>(ProcedureConstants.SP_CustomerGet, p, commandType: CommandType.StoredProcedure);
 
                 // TC maskesi cache'e yazılmadan önce uygulanır
                 if (customer != null && customer.NationalId.Length == 11)

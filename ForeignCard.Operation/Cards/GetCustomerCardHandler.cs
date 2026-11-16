@@ -17,18 +17,15 @@ public class GetCustomerCardHandler
         _factory = factory;
     }
 
-    public async Task<GetCustomerCardModel.GetCustomerCardResponse> Handle(
-        GetCustomerCardModel.GetCustomerCardRequest request,
-        CancellationToken cancellationToken)
+    public async Task<GetCustomerCardModel.GetCustomerCardResponse> Handle(GetCustomerCardModel.GetCustomerCardRequest request, CancellationToken cancellationToken)
     {
         using var conn = _factory.CreateConnection();
 
         var p = new DynamicParameters();
         p.Add("@CustomerId", request.CustomerId);
+        p.Add("@AccountId", request.AccountId);
 
-        var rows = await conn.QueryAsync<GetCustomerCardModel.GetCustomerCardItem>(
-            ProcedureConstants.SP_CardListByCustomer, p,
-            commandType: CommandType.StoredProcedure);
+        var rows = await conn.QueryAsync<GetCustomerCardModel.GetCustomerCardItem>(ProcedureConstants.SP_CardListByCustomer, p, commandType: CommandType.StoredProcedure);
 
         return new GetCustomerCardModel.GetCustomerCardResponse { Cards = rows.ToList() };
     }
