@@ -1,4 +1,5 @@
 ﻿using ForeignCard.Common.Abstractions;
+using ForeignCard.Common.Constants;
 using ForeignCard.Model.Countries;
 using MediatR;
 
@@ -15,7 +16,6 @@ public class CountryLoaderJob : BackgroundService
         _logger = logger;
     }
 
-
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         Console.WriteLine(">>>CountryLoaderJob baslatildi");
@@ -24,6 +24,7 @@ public class CountryLoaderJob : BackgroundService
             using var scope = _scopeFactory.CreateScope();
             var provider = scope.ServiceProvider.GetRequiredService<ICountryProvider>();
             var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
+            var cache = scope.ServiceProvider.GetRequiredService<ICacheService>();
 
             var countries = await provider.GetCountriesAsync(stoppingToken);
 
@@ -39,7 +40,10 @@ public class CountryLoaderJob : BackgroundService
                 }, stoppingToken);
             }
 
-            _logger.LogInformation("Ulkeler yuklendi: {Count} adet", countries.Count);
+            // Ülkeler yazıldı: eski listeyi cache'ten sil
+            await cache.RemoveAsync(CacheKeyConstans.CountryList);
+
+            _logger.LogInformation("Ulkeler yuklendi: {Count} adet, cache temizlendi", countries.Count);
         }
         catch (Exception ex)
         {
