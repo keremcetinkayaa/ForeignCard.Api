@@ -30,3 +30,4 @@ public class GetCustomerCardHandler
         return new GetCustomerCardModel.GetCustomerCardResponse { Cards = rows.ToList() };
     }
 }
+
