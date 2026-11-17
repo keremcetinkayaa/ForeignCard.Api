@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using ForeignCard.Common.Constants;
 using ForeignCard.Common.Enums;
 using ForeignCard.Model.Accounts;
 
@@ -12,6 +13,6 @@ public class UpdateAccountValidator : AbstractValidator<UpdateAccountModel.Accou
         RuleFor(x => x.Status)
             .NotEmpty()
             .Must(s => Enum.TryParse<EntityStatus>(s, true, out _))
-            .WithMessage("Status sadece ACTIVE, BLOCKED veya CLOSED olabilir.");
+            .WithMessage(ValidatorConstans.StatusError);
     }
 }

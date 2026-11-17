@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using ForeignCard.Common.Constants;
 using ForeignCard.Model.Customers;
 
 namespace ForeignCard.Operation.Customers;
@@ -17,6 +18,6 @@ public class UpdateCustomerValidator : AbstractValidator<UpdateCustomerModel.Cus
 
         RuleFor(x => x.PhoneNo).MaximumLength(20).When(x => !string.IsNullOrWhiteSpace(x.PhoneNo));
 
-        RuleFor(x => x).Must(x => !string.IsNullOrWhiteSpace(x.FirstName)|| !string.IsNullOrWhiteSpace(x.LastName)|| !string.IsNullOrWhiteSpace(x.PhoneNo)|| !string.IsNullOrWhiteSpace(x.Email)|| x.IsActive != null).WithMessage("Guncellenecek en az bir alan gonderilmelidir.");
+        RuleFor(x => x).Must(x => !string.IsNullOrWhiteSpace(x.FirstName)|| !string.IsNullOrWhiteSpace(x.LastName)|| !string.IsNullOrWhiteSpace(x.PhoneNo)|| !string.IsNullOrWhiteSpace(x.Email)|| x.IsActive != null).WithMessage(ValidatorConstans.EnterField);
     }
 }
