@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.14.37516.0 d17.14
+VisualStudioVersion = 17.14.37516.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ForeignCard.Api", "ForeignCard.Api\ForeignCard.Api.csproj", "{B5CF8CAA-2EB0-47E4-96A8-3629844AD4CD}"
 EndProject
@@ -10,6 +10,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ForeignCard.Common", "ForeignCard.Common\ForeignCard.Common.csproj", "{74932E55-D02F-4157-8810-89B5833B9876}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ForeignCard.Model", "ForeignCard.Model\ForeignCard.Model.csproj", "{3C208FB8-B70E-4F28-83A5-00E5D9F6C0E2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ForeignCard.Test", "ForeignCard.Test\ForeignCard.Test.csproj", "{7EC21EE3-9241-4F7B-B599-DD316499903E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{3C208FB8-B70E-4F28-83A5-00E5D9F6C0E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3C208FB8-B70E-4F28-83A5-00E5D9F6C0E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3C208FB8-B70E-4F28-83A5-00E5D9F6C0E2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7EC21EE3-9241-4F7B-B599-DD316499903E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7EC21EE3-9241-4F7B-B599-DD316499903E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7EC21EE3-9241-4F7B-B599-DD316499903E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7EC21EE3-9241-4F7B-B599-DD316499903E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

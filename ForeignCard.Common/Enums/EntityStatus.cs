@@ -10,6 +10,6 @@ namespace ForeignCard.Common.Enums
     {
         Active = 0,
         Blocked = 1,
-        Deleted = 2
+        Closed = 2
     }
 }
