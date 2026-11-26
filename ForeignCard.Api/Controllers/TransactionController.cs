@@ -41,7 +41,7 @@ public class TransactionsController : ControllerBase
 
     #region GET
     [HttpGet]
-    [Authorize(Roles = "ADMIN, CUSTOMER")]
+    [Authorize(Roles = "ADMIN")]
     public async Task<IActionResult> List([FromQuery] int top = 50)
     {
         var response = await _mediator.Send(new GetTransactions.GetTransactionsRequest { Top = top });

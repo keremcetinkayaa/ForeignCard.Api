@@ -24,7 +24,7 @@ public class LoginHandler : IRequestHandler<LoginModel.LoginRequest, LoginModel.
     {
         using var conn = _factory.CreateConnection();
 
-        // 1. Kilit kontrolü: kilitliyse şifreye hiç bakma
+        // 1. Kilit kontrolü: kilitliyse şifreye hiç bakma (admin ve müşteri için ortak)
         var lockParams = new DynamicParameters();
         lockParams.Add("@NationalId", request.NationalId);
 
@@ -36,30 +36,46 @@ public class LoginHandler : IRequestHandler<LoginModel.LoginRequest, LoginModel.
             throw new AccountLockedException(Math.Max(minutesLeft, 1));
         }
 
-        // 2. Kullanıcıyı getir
         var p = new DynamicParameters();
         p.Add("@NationalId", request.NationalId);
 
+        // 2. Önce admin tablosuna bak
+        var admin = await conn.QuerySingleOrDefaultAsync<LoginModel.AdminUserRow>(ProcedureConstants.SP_AdminLogin, p, commandType: CommandType.StoredProcedure);
+
+        if (admin != null)
+        {
+            var adminValid = !string.IsNullOrEmpty(admin.PasswordHash) && PasswordHelper.Verify(request.Password, admin.PasswordHash);
+
+            await AddAttemptAsync(conn, request.NationalId, null, adminValid);
+
+            if (!adminValid)
+                return null;
+
+            return CreateResponse(admin.AdminId, admin.FirstName + " " + admin.LastName, RoleConstants.Admin);
+        }
+
+        // 3. Admin değilse müşteri tablosuna bak
         var user = await conn.QuerySingleOrDefaultAsync<LoginModel.LoginUserRow>(ProcedureConstants.SP_CustomerLogin, p, commandType: CommandType.StoredProcedure);
 
-        // 3. Şifre kontrolü; başarısızsa denemeyi kaydet
-        var isValid = user != null&& !string.IsNullOrEmpty(user.PasswordHash)&& PasswordHelper.Verify(request.Password, user.PasswordHash);
+        var isValid = user != null && !string.IsNullOrEmpty(user.PasswordHash) && PasswordHelper.Verify(request.Password, user.PasswordHash);
 
         await AddAttemptAsync(conn, request.NationalId, user?.CustomerId, isValid);
 
         if (!isValid)
             return null;
 
-        // 4. Başarılı giriş: token üret
-        var fullName = user!.FirstName + " " + user.LastName;
-        var token = _tokenService.CreateToken(user.CustomerId, fullName, user.Role.Trim());
+        return CreateResponse(user!.CustomerId, user.FirstName + " " + user.LastName, RoleConstants.Customer);
+    }
 
+    // Token üretip cevabı hazırlar (admin ve müşteri için ortak)
+    private LoginModel.LoginResponse CreateResponse(int userId, string fullName, string role)
+    {
         return new LoginModel.LoginResponse
         {
-            Token = token,
-            CustomerId = user.CustomerId,
+            Token = _tokenService.CreateToken(userId, fullName, role),
+            UserId = userId,
             FullName = fullName,
-            Role = user.Role.Trim()
+            Role = role
         };
     }
 

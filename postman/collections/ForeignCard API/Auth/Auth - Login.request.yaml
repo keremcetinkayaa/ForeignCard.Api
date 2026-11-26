@@ -7,8 +7,8 @@ body:
   type: text
   content: |-
     {
-      "nationalId": "",
-      "password": ""
+      "nationalId": "99999999990",
+      "password": "Admin123!"
     }
 auth:
   type: noauth

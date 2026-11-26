@@ -14,7 +14,7 @@ namespace ForeignCard.Api.Controllers;
 // Giriş yapan kullanıcının kendi verileri. Id istekten değil, token'dan alınır.
 [ApiController]
 [Route("api/person")]
-[Authorize(Roles = "CUSTOMER, ADMIN")]
+[Authorize(Roles = "CUSTOMER")]
 public class PersonController : ControllerBase
 {
     private readonly IMediator _mediator;

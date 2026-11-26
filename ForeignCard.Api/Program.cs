@@ -30,7 +30,6 @@ builder.Services.AddHttpClient<IExchangeRateProvider, TcmbExchangeRateProvider>(
 builder.Services.AddHostedService<ExchangeRateJob>();
 builder.Services.AddSingleton<ICountryProvider, StaticCountryProvider>();
 builder.Services.AddHostedService<CountryLoaderJob>();
-builder.Services.AddHostedService<AdminSeederJob>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -39,9 +38,10 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         {
             OnTokenValidated = async context =>
             {
-                var idValue = context.Principal?.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value?? context.Principal?.FindFirst("nameid")?.Value;
+                var idValue = context.Principal?.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value ?? context.Principal?.FindFirst("nameid")?.Value;
+                var role = context.Principal?.FindFirst(System.Security.Claims.ClaimTypes.Role)?.Value;
 
-                if (!int.TryParse(idValue, out var customerId))
+                if (!int.TryParse(idValue, out var userId))
                 {
                     context.Fail("Gecersiz token");
                     return;
@@ -50,14 +50,23 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 var factory = context.HttpContext.RequestServices.GetRequiredService<IDbConnectionFactory>();
                 using var conn = factory.CreateConnection();
 
-                var row = await Dapper.SqlMapper.QuerySingleOrDefaultAsync<dynamic>(
-                    conn,
-                    ForeignCard.Common.Constants.ProcedureConstants.SP_CustomerGet,
-                    new { CustomerId = customerId },
-                    commandType: System.Data.CommandType.StoredProcedure);
+                // Admin ise ADMIN tablosuna, müþteri ise CUSTOMER tablosuna bak
+                var isAdmin = role == ForeignCard.Common.Constants.RoleConstants.Admin;
+
+                var row = isAdmin
+                    ? await Dapper.SqlMapper.QuerySingleOrDefaultAsync<dynamic>(
+                        conn,
+                        ForeignCard.Common.Constants.ProcedureConstants.SP_AdminGet,
+                        new { AdminId = userId },
+                        commandType: System.Data.CommandType.StoredProcedure)
+                    : await Dapper.SqlMapper.QuerySingleOrDefaultAsync<dynamic>(
+                        conn,
+                        ForeignCard.Common.Constants.ProcedureConstants.SP_CustomerGet,
+                        new { CustomerId = userId },
+                        commandType: System.Data.CommandType.StoredProcedure);
 
                 if (row == null || !(bool)row.IsActive)
-                    context.Fail("Musteri pasif");
+                    context.Fail(isAdmin ? "Admin pasif" : "Musteri pasif");
             }
         };
 

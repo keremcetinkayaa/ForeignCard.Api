@@ -57,5 +57,11 @@ namespace ForeignCard.Common.Constants
         public const string SP_LoginAttemptAdd = "Hist.LOGINATTEMPT_ADD";
         public const string SP_LoginAttemptCheckLock = "Hist.LOGINATTEMPT_CHECKLOCK";
         #endregion
+
+
+        #region Admin
+        public const string SP_AdminLogin = "Core.ADMIN_LOGIN";
+        public const string SP_AdminGet = "Core.ADMIN_GET";
+        #endregion
     }
 }

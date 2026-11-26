@@ -8,7 +8,6 @@ body:
   content: |-
     {
       "customerId": 1,
-      "accountNo": "",
-      "currencyCode": ""
+      "currencyCode": "TRY"
     }
 order: 1000
