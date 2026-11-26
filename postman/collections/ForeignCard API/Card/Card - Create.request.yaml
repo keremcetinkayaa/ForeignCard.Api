@@ -3,5 +3,5 @@ url: "{{baseUrl}}/api/cards"
 method: POST
 body:
   type: json
-  content: "{\r\n    \"accountId\":1\r\n}"
+  content: "{\r\n    \"accountId\":13\r\n}"
 order: 3000

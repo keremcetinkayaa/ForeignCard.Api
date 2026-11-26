@@ -7,11 +7,11 @@ body:
   type: text
   content: |-
     {
-      "firstName": "Demo",
-      "lastName": "Demo",
-      "nationalId": "12345678909",
-      "phoneNo": "5555555555",
-      "email": "Demo@mail.com",
-      "password":"Demo123!"
+      "firstName": "Deneme",
+      "lastName": "Deneme",
+      "nationalId": "10000000012",
+      "phoneNo": "5000000012",
+      "email": "Deneme@mail.com",
+      "password":"Deneme123!"
     }
 order: 1000

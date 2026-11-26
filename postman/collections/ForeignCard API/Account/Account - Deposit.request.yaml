@@ -7,8 +7,8 @@ body:
   type: text
   content: |-
     {
-      "accountId": 1,
-      "amount": 20000,
+      "accountId": 13,
+      "amount": 200000,
       "description": "Para yatirma"
     }
 order: 3000
